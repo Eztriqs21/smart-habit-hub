@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text-primary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-warning: var(--warning);
+  --color-warning-light: var(--warning-light);
+  --color-error: var(--error);
+  --color-error-light: var(--error-light);
+  --color-body-color: var(--body-color);
+  --color-body-light: var(--body-light);
+  --color-mind-color: var(--mind-color);
+  --color-mind-light: var(--mind-light);
+  --color-lifestyle-color: var(--lifestyle-color);
+  --color-lifestyle-light: var(--lifestyle-light);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-hover: #F5F5F3;
+  --surface-active: #EDEDEB;
+  --border: #E8E6E1;
+  --border-light: #F0EEEB;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --text-muted: #A0A0A0;
+  --primary: #2D6A4F;
+  --primary-hover: #245840;
+  --primary-light: #D8F3DC;
+  --primary-subtle: #EDF7F0;
+  --accent: #E76F51;
+  --accent-light: #FDE8E0;
+  --success: #40916C;
+  --success-light: #E8F5E9;
+  --warning: #E9C46A;
+  --warning-light: #FFF8E1;
+  --error: #E63946;
+  --error-light: #FFEBEE;
+  --body-color: #264653;
+  --body-light: #D4E8ED;
+  --mind-color: #7209B7;
+  --mind-light: #EDD4F5;
+  --lifestyle-color: #F77F00;
+  --lifestyle-light: #FFF0D6;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #121212;
+  --surface: #1E1E1E;
+  --surface-hover: #2A2A2A;
+  --surface-active: #333333;
+  --border: #333333;
+  --border-light: #2A2A2A;
+  --text-primary: #F0F0F0;
+  --text-secondary: #A0A0A0;
+  --text-muted: #666666;
+  --primary: #52B788;
+  --primary-hover: #6EC69A;
+  --primary-light: #1B4332;
+  --primary-subtle: #162E23;
+  --accent: #F4845F;
+  --accent-light: #3D2219;
+  --success: #52B788;
+  --success-light: #1B3A2A;
+  --warning: #E9C46A;
+  --warning-light: #3D3219;
+  --error: #EF5350;
+  --error-light: #3D1B1C;
+  --body-color: #5DA4B5;
+  --body-light: #1A2E33;
+  --mind-color: #A855F7;
+  --mind-light: #2A1533;
+  --lifestyle-color: #FB923C;
+  --lifestyle-light: #33261A;
+  color-scheme: dark;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-hover) 25%, var(--surface-active) 50%, var(--surface-hover) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md, 10px);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Confetti canvas */
+.confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
