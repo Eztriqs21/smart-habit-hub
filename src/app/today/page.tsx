@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useState, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
@@ -9,6 +7,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useToast } from "@/providers/ToastProvider";
 import { AppShell } from "@/components/layout/AppShell";
 import { Providers } from "@/providers";
+import { AuthGuard } from "@/components/auth/AuthGuard";
 import { HabitCard } from "@/components/habits/HabitCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -205,7 +204,9 @@ function TodayContent() {
 export default function TodayPage() {
   return (
     <Providers>
-      <TodayContent />
+      <AuthGuard>
+        <TodayContent />
+      </AuthGuard>
     </Providers>
   );
 }

@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
@@ -11,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { DimensionBar } from "@/components/dimensions/DimensionBar";
+import { AuthGuard } from "@/components/auth/AuthGuard";
 import { TrendingUp, Flame, CheckCircle, Calendar } from "lucide-react";
 import { type Habit, type HabitLog, type Dimension } from "@/types";
 
@@ -178,7 +177,9 @@ function AnalyticsContent() {
 export default function AnalyticsPage() {
   return (
     <Providers>
-      <AnalyticsContent />
+      <AuthGuard>
+        <AnalyticsContent />
+      </AuthGuard>
     </Providers>
   );
 }

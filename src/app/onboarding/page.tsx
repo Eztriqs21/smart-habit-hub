@@ -10,6 +10,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Chip } from "@/components/ui/Chip";
+import { AuthGuard } from "@/components/auth/AuthGuard";
 import { TEMPLATES } from "@/lib/constants/templates";
 import { DIMENSIONS } from "@/lib/constants/dimensions";
 import { type Dimension, type TimeOfDay } from "@/types";
@@ -305,7 +306,9 @@ function OnboardingContent() {
 export default function OnboardingPage() {
   return (
     <Providers>
-      <OnboardingContent />
+      <AuthGuard>
+        <OnboardingContent />
+      </AuthGuard>
     </Providers>
   );
 }

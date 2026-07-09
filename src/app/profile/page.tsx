@@ -8,6 +8,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Card } from "@/components/ui/Card";
 import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
+import { AuthGuard } from "@/components/auth/AuthGuard";
 import { useToast } from "@/providers/ToastProvider";
 import { createClient } from "@/lib/supabase/client";
 import { Monitor, Sun, Moon, LogOut } from "lucide-react";
@@ -95,7 +96,9 @@ function ProfileContent() {
 export default function ProfilePage() {
   return (
     <Providers>
-      <ProfileContent />
+      <AuthGuard>
+        <ProfileContent />
+      </AuthGuard>
     </Providers>
   );
 }

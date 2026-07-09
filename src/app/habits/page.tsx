@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
@@ -17,6 +15,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { AuthGuard } from "@/components/auth/AuthGuard";
 import { Plus } from "lucide-react";
 import { type Habit, type HabitLog, type Dimension } from "@/types";
 import { format } from "date-fns";
@@ -207,7 +206,9 @@ function HabitsContent() {
 export default function HabitsPage() {
   return (
     <Providers>
-      <HabitsContent />
+      <AuthGuard>
+        <HabitsContent />
+      </AuthGuard>
     </Providers>
   );
 }
