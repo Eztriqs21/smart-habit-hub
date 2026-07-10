@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
@@ -9,7 +8,6 @@ import { Providers } from "@/providers";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Chip } from "@/components/ui/Chip";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { TEMPLATES } from "@/lib/constants/templates";
 import { DIMENSIONS } from "@/lib/constants/dimensions";

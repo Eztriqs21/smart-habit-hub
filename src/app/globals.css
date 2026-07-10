@@ -4,6 +4,7 @@
   --color-background: var(--bg);
   --color-foreground: var(--text-primary);
   --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
   --color-surface-hover: var(--surface-hover);
   --color-surface-active: var(--surface-active);
   --color-border: var(--border);
@@ -13,6 +14,7 @@
   --color-primary-light: var(--primary-light);
   --color-primary-subtle: var(--primary-subtle);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-light: var(--accent-light);
   --color-success: var(--success);
   --color-success-light: var(--success-light);
@@ -32,9 +34,11 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
+/* ─── Light Theme ─── */
 :root {
   --bg: #FAFAF8;
   --surface: #FFFFFF;
+  --surface-elevated: #FFFFFF;
   --surface-hover: #F5F5F3;
   --surface-active: #EDEDEB;
   --border: #E8E6E1;
@@ -47,6 +51,7 @@
   --primary-light: #D8F3DC;
   --primary-subtle: #EDF7F0;
   --accent: #E76F51;
+  --accent-hover: #D4553A;
   --accent-light: #FDE8E0;
   --success: #40916C;
   --success-light: #E8F5E9;
@@ -60,24 +65,44 @@
   --mind-light: #EDD4F5;
   --lifestyle-color: #F77F00;
   --lifestyle-light: #FFF0D6;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.12);
+  --shadow-glow: 0 0 24px rgba(45,106,79,0.15);
+  --shadow-glow-accent: 0 0 24px rgba(231,111,81,0.15);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --spacing-section: 80px;
+
   color-scheme: light;
 }
 
+/* ─── Dark Theme ─── */
 .dark {
-  --bg: #121212;
-  --surface: #1E1E1E;
-  --surface-hover: #2A2A2A;
-  --surface-active: #333333;
-  --border: #333333;
-  --border-light: #2A2A2A;
+  --bg: #0F0F0F;
+  --surface: #1A1A1A;
+  --surface-elevated: #222222;
+  --surface-hover: #252525;
+  --surface-active: #303030;
+  --border: #2A2A2A;
+  --border-light: #222222;
   --text-primary: #F0F0F0;
   --text-secondary: #A0A0A0;
-  --text-muted: #666666;
+  --text-muted: #606060;
   --primary: #52B788;
   --primary-hover: #6EC69A;
   --primary-light: #1B4332;
   --primary-subtle: #162E23;
   --accent: #F4845F;
+  --accent-hover: #F59E7E;
   --accent-light: #3D2219;
   --success: #52B788;
   --success-light: #1B3A2A;
@@ -91,9 +116,19 @@
   --mind-light: #2A1533;
   --lifestyle-color: #FB923C;
   --lifestyle-light: #33261A;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.35);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.45);
+  --shadow-glow: 0 0 24px rgba(82,183,136,0.2);
+  --shadow-glow-accent: 0 0 24px rgba(244,132,95,0.2);
+
   color-scheme: dark;
 }
 
+/* ─── Base Reset ─── */
 * {
   border-color: var(--border);
 }
@@ -102,9 +137,67 @@ body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Skeleton shimmer */
+/* ─── Typography Scale ─── */
+.text-hero {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.text-display {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.text-title {
+  font-size: clamp(1.5rem, 3vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.text-heading {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.text-body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+
+.text-caption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.text-micro {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.text-label {
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ─── Skeleton Shimmer ─── */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -114,26 +207,17 @@ body {
   background: linear-gradient(90deg, var(--surface-hover) 25%, var(--surface-active) 50%, var(--surface-hover) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-radius: var(--radius-md, 10px);
+  border-radius: var(--radius-md);
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Focus visible */
+/* ─── Focus Visible ─── */
 :focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* Custom scrollbar */
+/* ─── Custom Scrollbar ─── */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -148,7 +232,71 @@ body {
   background: var(--text-muted);
 }
 
-/* Confetti canvas */
+/* ─── Utility Classes ─── */
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.glass-strong {
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #40916C 100%);
+}
+
+.gradient-accent {
+  background: linear-gradient(135deg, var(--accent) 0%, #E9C46A 100%);
+}
+
+.gradient-radial {
+  background: radial-gradient(ellipse at 50% 0%, var(--primary-light) 0%, transparent 70%);
+}
+
+.gradient-radial-accent {
+  background: radial-gradient(ellipse at 80% 20%, var(--accent-light) 0%, transparent 60%);
+}
+
+.border-gradient {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  background-origin: border-box;
+  position: relative;
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Confetti Canvas ─── */
 .confetti-canvas {
   position: fixed;
   top: 0;
@@ -157,4 +305,25 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
+}
+
+/* ─── Checkbox Check Animation ─── */
+@keyframes check-pop {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.check-animate {
+  animation: check-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Pulse Glow ─── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45,106,79,0.3); }
+  50% { box-shadow: 0 0 16px 4px rgba(45,106,79,0.15); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }

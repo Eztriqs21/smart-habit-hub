@@ -6,12 +6,12 @@ import { AppShell } from "@/components/layout/AppShell";
 import { Providers } from "@/providers";
 import { Avatar } from "@/components/ui/Avatar";
 import { Card } from "@/components/ui/Card";
-import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { useToast } from "@/providers/ToastProvider";
 import { createClient } from "@/lib/supabase/client";
-import { Monitor, Sun, Moon, LogOut } from "lucide-react";
+import { PageTransition } from "@/components/ui/PageTransition";
+import { Monitor, Sun, Moon, LogOut, Shield } from "lucide-react";
 
 function ProfileContent() {
   const { user, signOut } = useAuth();
@@ -36,58 +36,70 @@ function ProfileContent() {
 
   return (
     <AppShell>
-      <div className="p-6 max-w-[560px] mx-auto">
-        <h1 className="text-xl font-semibold text-foreground mb-6">Profile & Settings</h1>
+      <div className="p-6 lg:p-8 max-w-[560px] mx-auto">
+        <PageTransition>
+          <h1 className="text-title text-foreground mb-6">Profile & Settings</h1>
 
-        {/* Profile Card */}
-        <Card className="mb-6">
-          <div className="flex items-center gap-4">
-            <Avatar name={user?.display_name || user?.email} size="lg" />
-            <div>
-              <p className="text-lg font-semibold text-foreground">
-                {user?.display_name || "Wellness User"}
-              </p>
-              <p className="text-sm text-text-secondary">{user?.email}</p>
-              <p className="text-[13px] text-text-muted mt-1">
-                Member since {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "today"}
-              </p>
+          {/* Profile Card */}
+          <Card gradientBorder className="mb-6">
+            <div className="flex items-center gap-4">
+              <Avatar name={user?.display_name || user?.email} size="lg" />
+              <div>
+                <p className="text-lg font-semibold text-foreground">
+                  {user?.display_name || "Wellness User"}
+                </p>
+                <p className="text-sm text-text-secondary">{user?.email}</p>
+                <p className="text-[13px] text-text-muted mt-1">
+                  Member since {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "today"}
+                </p>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
 
-        {/* Theme */}
-        <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-          Appearance
-        </h2>
-        <Card className="mb-6">
-          <p className="text-sm font-medium text-foreground mb-3">Theme</p>
-          <div className="flex gap-2">
-            {[
-              { value: "system" as const, label: "System", icon: Monitor },
-              { value: "light" as const, label: "Light", icon: Sun },
-              { value: "dark" as const, label: "Dark", icon: Moon },
-            ].map((t) => (
-              <button
-                key={t.value}
-                onClick={() => handleThemeChange(t.value)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-[10px] border text-sm font-medium transition-all ${
-                  theme === t.value
-                    ? "border-primary bg-primary-subtle text-primary"
-                    : "border-border bg-surface text-text-secondary hover:bg-surface-hover"
-                }`}
-              >
-                <t.icon className="w-4 h-4" />
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </Card>
+          {/* Theme */}
+          <h2 className="text-label text-text-secondary mb-3">Appearance</h2>
+          <Card className="mb-6">
+            <p className="text-sm font-medium text-foreground mb-3">Theme</p>
+            <div className="flex gap-2">
+              {[
+                { value: "system" as const, label: "System", icon: Monitor },
+                { value: "light" as const, label: "Light", icon: Sun },
+                { value: "dark" as const, label: "Dark", icon: Moon },
+              ].map((t) => (
+                <button
+                  key={t.value}
+                  onClick={() => handleThemeChange(t.value)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-[10px] border text-sm font-medium transition-all ${
+                    theme === t.value
+                      ? "border-primary bg-primary/10 text-primary shadow-sm"
+                      : "border-border bg-surface text-text-secondary hover:bg-surface-hover"
+                  }`}
+                >
+                  <t.icon className="w-4 h-4" />
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </Card>
 
-        {/* Sign Out */}
-        <Button variant="ghost" onClick={handleSignOut} className="w-full text-error hover:bg-error-light">
-          <LogOut className="w-4 h-4 mr-2" />
-          Sign Out
-        </Button>
+          {/* Account */}
+          <h2 className="text-label text-text-secondary mb-3">Account</h2>
+          <Card className="mb-8">
+            <div className="flex items-center gap-3 mb-3">
+              <Shield className="w-4 h-4 text-text-muted" />
+              <p className="text-sm font-medium text-foreground">Security</p>
+            </div>
+            <p className="text-sm text-text-secondary">
+              Your account is secured with Supabase authentication.
+            </p>
+          </Card>
+
+          {/* Sign Out */}
+          <Button variant="ghost" onClick={handleSignOut} className="w-full text-error hover:bg-error-light/50">
+            <LogOut className="w-4 h-4 mr-2" />
+            Sign Out
+          </Button>
+        </PageTransition>
       </div>
     </AppShell>
   );

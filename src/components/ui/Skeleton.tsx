@@ -13,8 +13,8 @@ export function Skeleton({ className, variant = "text", width, height }: Skeleto
       className={cn(
         "skeleton",
         {
-          "rounded-md": variant === "text",
-          "rounded-[10px]": variant === "rectangular",
+          "rounded-lg": variant === "text",
+          "rounded-[14px]": variant === "rectangular",
           "rounded-full": variant === "circular",
         },
         className

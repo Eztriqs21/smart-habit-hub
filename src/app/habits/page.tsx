@@ -16,6 +16,8 @@ import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { AuthGuard } from "@/components/auth/AuthGuard";
+import { PageTransition, staggerContainer, staggerItem } from "@/components/ui/PageTransition";
+import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { type Habit, type HabitLog, type Dimension } from "@/types";
 import { format } from "date-fns";
@@ -57,7 +59,7 @@ function HabitsContent() {
     enabled: !!user,
   });
 
-  const archiveMutation = useMutation({
+  const _archiveMutation = useMutation({
     mutationFn: async (habitId: string) => {
       const { error } = await supabase
         .from("habits")
@@ -67,12 +69,7 @@ function HabitsContent() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["habits"] });
-      showToast("Habit archived", "default", {
-        label: "Undo",
-        onClick: () => {
-          // TODO: implement undo
-        },
-      });
+      showToast("Habit archived", "default");
     },
   });
 
@@ -109,16 +106,16 @@ function HabitsContent() {
   if (isLoading) {
     return (
       <AppShell>
-        <div className="p-6 max-w-3xl mx-auto space-y-6">
-          <Skeleton className="h-8 w-48" />
+        <div className="p-6 lg:p-8 max-w-3xl mx-auto space-y-6">
+          <Skeleton className="h-10 w-48" />
           <div className="flex gap-2">
-            <Skeleton className="h-8 w-16" />
-            <Skeleton className="h-8 w-16" />
-            <Skeleton className="h-8 w-16" />
+            <Skeleton className="h-9 w-16" />
+            <Skeleton className="h-9 w-16" />
+            <Skeleton className="h-9 w-16" />
           </div>
           <div className="space-y-3">
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-18 w-full" />
+            <Skeleton className="h-18 w-full" />
           </div>
         </div>
       </AppShell>
@@ -127,76 +124,82 @@ function HabitsContent() {
 
   return (
     <AppShell>
-      <div className="p-6 max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-semibold text-foreground">Habits</h1>
-          <Button onClick={() => openHabitModal()} size="sm">
-            <Plus className="w-4 h-4 mr-1" />
-            New Habit
-          </Button>
-        </div>
+      <div className="p-6 lg:p-8 max-w-3xl mx-auto">
+        <PageTransition>
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-title text-foreground">Habits</h1>
+            <Button onClick={() => openHabitModal()} size="sm">
+              <Plus className="w-4 h-4 mr-1" />
+              New Habit
+            </Button>
+          </div>
 
-        {/* Filters */}
-        <div className="flex gap-2 mb-6 flex-wrap">
-          <Chip label="All" selected={filter === "all"} onClick={() => setFilter("all")} />
-          <Chip label="Body" selected={filter === "body"} onClick={() => setFilter("body")} color="var(--body-color)" />
-          <Chip label="Mind" selected={filter === "mind"} onClick={() => setFilter("mind")} color="var(--mind-color)" />
-          <Chip label="Lifestyle" selected={filter === "lifestyle"} onClick={() => setFilter("lifestyle")} color="var(--lifestyle-color)" />
-        </div>
+          {/* Filters */}
+          <div className="flex gap-2 mb-6 flex-wrap">
+            <Chip label="All" selected={filter === "all"} onClick={() => setFilter("all")} />
+            <Chip label="Body" selected={filter === "body"} onClick={() => setFilter("body")} color="var(--body-color)" />
+            <Chip label="Mind" selected={filter === "mind"} onClick={() => setFilter("mind")} color="var(--mind-color)" />
+            <Chip label="Lifestyle" selected={filter === "lifestyle"} onClick={() => setFilter("lifestyle")} color="var(--lifestyle-color)" />
+          </div>
 
-        {/* Active Habits */}
-        {activeHabits.length === 0 ? (
-          <EmptyState
-            title="No habits yet"
-            description="Create your first habit and start building your wellness routine."
-            action={
-              <Button onClick={() => openHabitModal()}>
-                <Plus className="w-4 h-4 mr-1" />
-                Create First Habit
-              </Button>
-            }
-          />
-        ) : (
-          <>
-            <SectionHeader title={`Active Habits (${filteredHabits.length})`} />
-            <div className="space-y-3 mb-8">
-              {filteredHabits.map((habit) => (
-                <HabitCard
-                  key={habit.id}
-                  habit={habit}
-                  isCompleted={logs.some(
-                    (l) => l.habit_id === habit.id && l.status === "completed"
-                  )}
-                  onToggle={() =>
-                    toggleMutation.mutate({
-                      habitId: habit.id,
-                      currentlyCompleted: logs.some(
+          {activeHabits.length === 0 ? (
+            <EmptyState
+              title="No habits yet"
+              description="Create your first habit and start building your wellness routine."
+              action={
+                <Button onClick={() => openHabitModal()}>
+                  <Plus className="w-4 h-4 mr-1" />
+                  Create First Habit
+                </Button>
+              }
+            />
+          ) : (
+            <>
+              <SectionHeader title={`Active Habits (${filteredHabits.length})`} />
+              <motion.div
+                className="space-y-3 mb-8"
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+              >
+                {filteredHabits.map((habit) => (
+                  <motion.div key={habit.id} variants={staggerItem}>
+                    <HabitCard
+                      habit={habit}
+                      isCompleted={logs.some(
                         (l) => l.habit_id === habit.id && l.status === "completed"
-                      ),
-                    })
-                  }
-                />
-              ))}
-            </div>
-          </>
-        )}
+                      )}
+                      onToggle={() =>
+                        toggleMutation.mutate({
+                          habitId: habit.id,
+                          currentlyCompleted: logs.some(
+                            (l) => l.habit_id === habit.id && l.status === "completed"
+                          ),
+                        })
+                      }
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </>
+          )}
 
-        {/* Archived */}
-        {archivedHabits.length > 0 && (
-          <>
-            <SectionHeader title={`Archived (${archivedHabits.length})`} />
-            <div className="space-y-3 opacity-60">
-              {archivedHabits.map((habit) => (
-                <HabitCard
-                  key={habit.id}
-                  habit={habit}
-                  isCompleted={false}
-                  onToggle={() => {}}
-                />
-              ))}
-            </div>
-          </>
-        )}
+          {archivedHabits.length > 0 && (
+            <>
+              <SectionHeader title={`Archived (${archivedHabits.length})`} />
+              <div className="space-y-3 opacity-50">
+                {archivedHabits.map((habit) => (
+                  <HabitCard
+                    key={habit.id}
+                    habit={habit}
+                    isCompleted={false}
+                    onToggle={() => {}}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </PageTransition>
       </div>
       <HabitForm />
     </AppShell>

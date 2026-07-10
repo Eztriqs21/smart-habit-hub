@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils/cn";
 
 interface ProgressRingProps {
@@ -17,10 +20,16 @@ export function ProgressRing({
   color,
   className,
 }: ProgressRingProps) {
+  const [mounted, setMounted] = useState(false);
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const percentage = Math.min(Math.max(value / max, 0), 1);
-  const dashoffset = circumference * (1 - percentage);
+  const dashoffset = circumference * (1 - (mounted ? percentage : 0));
+
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <svg
@@ -47,7 +56,7 @@ export function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={dashoffset}
         strokeLinecap="round"
-        className="transition-[stroke-dashoffset] duration-600 ease-out"
+        className="transition-[stroke-dashoffset] duration-1000 ease-out"
       />
     </svg>
   );

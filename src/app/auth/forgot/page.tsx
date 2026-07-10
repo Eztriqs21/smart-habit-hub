@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { Providers } from "@/providers";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/providers/ToastProvider";
+import { CheckCircle } from "lucide-react";
 
 function ForgotPasswordContent() {
   const [email, setEmail] = useState("");
@@ -33,28 +35,44 @@ function ForgotPasswordContent() {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex items-center justify-center px-4">
-      <div className="w-full max-w-[400px]">
-        <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold">
+    <div className="min-h-screen bg-bg flex items-center justify-center px-6">
+      <motion.div
+        className="w-full max-w-[380px]"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        <div className="flex items-center gap-2 mb-8">
+          <Link href="/" className="text-xl font-bold">
             <span className="text-primary">Wellness</span>Hub
           </Link>
-          <h1 className="text-xl font-semibold text-foreground mt-6 mb-2">Reset password</h1>
-          <p className="text-sm text-text-secondary">
-            {sent
-              ? "We sent a reset link to your email."
-              : "Enter your email and we'll send you a reset link."}
-          </p>
         </div>
 
+        <h1 className="text-title text-foreground mb-1">Reset password</h1>
+        <p className="text-sm text-text-secondary mb-8">
+          {sent
+            ? "We sent a reset link to your email."
+            : "Enter your email and we'll send you a reset link."}
+        </p>
+
         {sent ? (
-          <div className="text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center text-center py-8"
+          >
+            <div className="w-16 h-16 rounded-full bg-success-light flex items-center justify-center mb-4">
+              <CheckCircle className="w-8 h-8 text-success" />
+            </div>
+            <p className="text-sm text-text-secondary mb-6">
+              Check <span className="font-medium text-foreground">{email}</span> for the reset link.
+            </p>
             <Link href="/auth/signin">
               <Button variant="secondary" className="w-full">
                 Back to Sign In
               </Button>
             </Link>
-          </div>
+          </motion.div>
         ) : (
           <form onSubmit={handleReset} className="flex flex-col gap-4">
             <Input
@@ -65,18 +83,18 @@ function ForgotPasswordContent() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Button type="submit" isLoading={isLoading} className="w-full mt-2">
+            <Button type="submit" isLoading={isLoading} variant="glow" className="w-full mt-1">
               Send Reset Link
             </Button>
           </form>
         )}
 
         <div className="mt-6 text-center">
-          <Link href="/auth/signin" className="text-sm text-primary hover:underline">
+          <Link href="/auth/signin" className="text-sm text-text-secondary hover:text-primary transition-colors">
             Back to Sign In
           </Link>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

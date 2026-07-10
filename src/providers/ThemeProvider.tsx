@@ -26,6 +26,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem("theme") as Theme | null;
     if (stored) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- standard theme init pattern
       setThemeState(stored);
     }
   }, []);
@@ -44,6 +45,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
 
     root.classList.add(resolved);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing resolved theme with DOM
     setResolvedTheme(resolved);
   }, [theme]);
 
