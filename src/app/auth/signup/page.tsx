@@ -7,8 +7,7 @@ import { motion } from "framer-motion";
 import { createClient, BASE_PATH } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { useToast } from "@/providers/ToastProvider";
-import { Sparkles } from "lucide-react";
+import { Sparkles, MailCheck } from "lucide-react";
 
 function SignUpContent() {
   const supabase = useMemo(() => createClient(), []);
@@ -24,7 +23,7 @@ function SignUpContent() {
   const [displayName, setDisplayName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { showToast } = useToast();
+  const [emailSent, setEmailSent] = useState(false);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,11 +36,12 @@ function SignUpContent() {
 
     setIsLoading(true);
 
-    const { error: authError } = await supabase.auth.signUp({
+    const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { display_name: displayName },
+        emailRedirectTo: `${window.location.origin}${BASE_PATH}/auth/callback?next=/onboarding`,
       },
     });
 
@@ -51,8 +51,14 @@ function SignUpContent() {
       return;
     }
 
-    showToast("Account created! Welcome to WellnessHub.", "success");
-    router.push(`${BASE_PATH}/onboarding`);
+    if (data?.user?.identities?.length === 0) {
+      setError("An account with this email already exists.");
+      setIsLoading(false);
+      return;
+    }
+
+    setEmailSent(true);
+    setIsLoading(false);
   };
 
   const handleGoogleSignUp = async () => {
@@ -61,6 +67,60 @@ function SignUpContent() {
       options: { redirectTo: `${window.location.origin}${BASE_PATH}/auth/callback?next=/onboarding` },
     });
   };
+
+  if (emailSent) {
+    return (
+      <div className="min-h-screen bg-bg flex">
+        <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+          <div className="absolute inset-0 gradient-primary" />
+          <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] rounded-full bg-white/10 blur-[80px]" />
+          <div className="absolute bottom-1/3 left-1/3 w-[250px] h-[250px] rounded-full bg-white/10 blur-[60px]" />
+          <div className="relative z-10 flex flex-col justify-center px-16 text-white">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-10 h-10 rounded-[10px] bg-white/20 flex items-center justify-center">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <span className="text-2xl font-bold tracking-tight">WellnessHub</span>
+            </div>
+            <h2 className="text-4xl font-bold leading-tight mb-4">
+              Start building<br />better habits today
+            </h2>
+            <p className="text-lg text-white/80 leading-relaxed max-w-md">
+              Join thousands building healthy habits across Body, Mind, and Lifestyle.
+              It takes just 30 seconds.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center px-6 py-12">
+          <motion.div
+            className="w-full max-w-[380px] text-center"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <div className="w-16 h-16 rounded-2xl bg-success-light flex items-center justify-center mx-auto mb-6">
+              <MailCheck className="w-8 h-8 text-success" />
+            </div>
+            <h1 className="text-title text-foreground mb-2">Check your email</h1>
+            <p className="text-sm text-text-secondary mb-2">
+              We sent a confirmation link to
+            </p>
+            <p className="text-sm font-medium text-foreground mb-6">{email}</p>
+            <p className="text-[13px] text-text-muted mb-8">
+              Click the link in the email to confirm your account and start your wellness journey.
+            </p>
+            <Link
+              href={`${BASE_PATH}/auth/signin`}
+              className="inline-flex items-center justify-center h-10 px-4 bg-primary text-white rounded-[10px] text-sm font-medium hover:bg-primary-hover transition-colors"
+            >
+              Back to Sign In
+            </Link>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg flex">
