@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient, BASE_PATH } from "@/lib/supabase/client";
 import { type User } from "@/types";
 import type { Session } from "@supabase/supabase-js";
 
@@ -27,45 +28,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const supabase = createClient();
+  const router = useRouter();
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { session: currentSession } } = await supabase.auth.getSession();
-      setSession(currentSession);
+      try {
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        setSession(currentSession);
 
-      if (currentSession?.user) {
-        const { data } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", currentSession.user.id)
-          .single();
+        if (currentSession?.user) {
+          const { data } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", currentSession.user.id)
+            .single();
 
-        if (data) {
-          setUser({
-            id: data.id,
-            email: currentSession.user.email || "",
-            display_name: data.display_name,
-            avatar_url: data.avatar_url,
-            onboarding_completed: data.onboarding_completed,
-            preferences: data.preferences || { theme: "system", focus_areas: [], time_preference: "morning" },
-            created_at: data.created_at,
-            updated_at: data.updated_at,
-          });
-        } else {
-          setUser({
-            id: currentSession.user.id,
-            email: currentSession.user.email || "",
-            display_name: null,
-            avatar_url: null,
-            onboarding_completed: false,
-            preferences: { theme: "system", focus_areas: [], time_preference: "morning" },
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          });
+          if (data) {
+            setUser({
+              id: data.id,
+              email: currentSession.user.email || "",
+              display_name: data.display_name,
+              avatar_url: data.avatar_url,
+              onboarding_completed: data.onboarding_completed,
+              preferences: data.preferences || { theme: "system", focus_areas: [], time_preference: "morning" },
+              created_at: data.created_at,
+              updated_at: data.updated_at,
+            });
+          } else {
+            setUser({
+              id: currentSession.user.id,
+              email: currentSession.user.email || "",
+              display_name: null,
+              avatar_url: null,
+              onboarding_completed: false,
+              preferences: { theme: "system", focus_areas: [], time_preference: "morning" },
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            });
+          }
         }
+      } catch (err) {
+        console.error("[WellnessHub] Auth error:", err);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     getUser();
@@ -106,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
-    window.location.href = "/auth/signin";
+    router.push(`${BASE_PATH}/auth/signin`);
   };
 
   return (

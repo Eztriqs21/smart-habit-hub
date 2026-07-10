@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
-import { Providers } from "@/providers";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -303,10 +302,8 @@ function OnboardingContent() {
 
 export default function OnboardingPage() {
   return (
-    <Providers>
-      <AuthGuard>
-        <OnboardingContent />
-      </AuthGuard>
-    </Providers>
+    <AuthGuard>
+      <OnboardingContent />
+    </AuthGuard>
   );
 }

@@ -1,23 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
-import { Providers } from "@/providers";
+import { createClient, BASE_PATH } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/providers/ToastProvider";
 import { Sparkles } from "lucide-react";
 
 function SignUpContent() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const router = useRouter();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) router.push("/today");
+      if (session) router.push(`${BASE_PATH}/today`);
     });
   }, [supabase, router]);
   const [email, setEmail] = useState("");
@@ -53,13 +52,13 @@ function SignUpContent() {
     }
 
     showToast("Account created! Welcome to WellnessHub.", "success");
-    router.push("/onboarding");
+    router.push(`${BASE_PATH}/onboarding`);
   };
 
   const handleGoogleSignUp = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/onboarding` },
+      options: { redirectTo: `${window.location.origin}${BASE_PATH}/auth/callback?next=/onboarding` },
     });
   };
 
@@ -164,7 +163,7 @@ function SignUpContent() {
           <div className="mt-6 text-center">
             <p className="text-sm text-text-secondary">
               Already have an account?{" "}
-              <Link href="/auth/signin" className="text-primary font-medium hover:underline">
+              <Link href={`${BASE_PATH}/auth/signin`} className="text-primary font-medium hover:underline">
                 Sign in
               </Link>
             </p>
@@ -176,9 +175,5 @@ function SignUpContent() {
 }
 
 export default function SignUpPage() {
-  return (
-    <Providers>
-      <SignUpContent />
-    </Providers>
-  );
+  return <SignUpContent />;
 }

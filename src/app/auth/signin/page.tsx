@@ -1,23 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
-import { Providers } from "@/providers";
+import { createClient, BASE_PATH } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/providers/ToastProvider";
 import { Sparkles } from "lucide-react";
 
 function SignInContent() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const router = useRouter();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) router.push("/today");
+      if (session) router.push(`${BASE_PATH}/today`);
     });
   }, [supabase, router]);
   const [email, setEmail] = useState("");
@@ -43,13 +42,13 @@ function SignInContent() {
     }
 
     showToast("Welcome back!", "success");
-    router.push("/today");
+    router.push(`${BASE_PATH}/today`);
   };
 
   const handleGoogleSignIn = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/today` },
+      options: { redirectTo: `${window.location.origin}${BASE_PATH}/auth/callback?next=/today` },
     });
   };
 
@@ -145,12 +144,12 @@ function SignInContent() {
           </Button>
 
           <div className="mt-6 text-center space-y-2">
-            <Link href="/auth/forgot" className="text-[13px] text-text-secondary hover:text-primary transition-colors">
+            <Link href={`${BASE_PATH}/auth/forgot`} className="text-[13px] text-text-secondary hover:text-primary transition-colors">
               Forgot password?
             </Link>
             <p className="text-sm text-text-secondary">
               Don&apos;t have an account?{" "}
-              <Link href="/auth/signup" className="text-primary font-medium hover:underline">
+              <Link href={`${BASE_PATH}/auth/signup`} className="text-primary font-medium hover:underline">
                 Sign up
               </Link>
             </p>
@@ -162,9 +161,5 @@ function SignInContent() {
 }
 
 export default function SignInPage() {
-  return (
-    <Providers>
-      <SignInContent />
-    </Providers>
-  );
+  return <SignInContent />;
 }

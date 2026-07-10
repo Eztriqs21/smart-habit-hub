@@ -7,7 +7,6 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useToast } from "@/providers/ToastProvider";
 import { useUIStore } from "@/stores/ui-store";
 import { AppShell } from "@/components/layout/AppShell";
-import { Providers } from "@/providers";
 import { HabitCard } from "@/components/habits/HabitCard";
 import { HabitForm } from "@/components/habits/HabitForm";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -208,10 +207,8 @@ function HabitsContent() {
 
 export default function HabitsPage() {
   return (
-    <Providers>
-      <AuthGuard>
-        <HabitsContent />
-      </AuthGuard>
-    </Providers>
+    <AuthGuard>
+      <HabitsContent />
+    </AuthGuard>
   );
 }

@@ -7,7 +7,6 @@ import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useToast } from "@/providers/ToastProvider";
 import { AppShell } from "@/components/layout/AppShell";
-import { Providers } from "@/providers";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { HabitCard } from "@/components/habits/HabitCard";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -253,10 +252,8 @@ function TodayContent() {
 
 export default function TodayPage() {
   return (
-    <Providers>
-      <AuthGuard>
-        <TodayContent />
-      </AuthGuard>
-    </Providers>
+    <AuthGuard>
+      <TodayContent />
+    </AuthGuard>
   );
 }

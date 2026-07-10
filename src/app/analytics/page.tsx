@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { AppShell } from "@/components/layout/AppShell";
-import { Providers } from "@/providers";
 import { Card } from "@/components/ui/Card";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -197,10 +196,8 @@ function AnalyticsContent() {
 
 export default function AnalyticsPage() {
   return (
-    <Providers>
-      <AuthGuard>
-        <AnalyticsContent />
-      </AuthGuard>
-    </Providers>
+    <AuthGuard>
+      <AnalyticsContent />
+    </AuthGuard>
   );
 }

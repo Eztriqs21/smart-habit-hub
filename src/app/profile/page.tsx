@@ -3,7 +3,6 @@
 import { useAuth } from "@/providers/AuthProvider";
 import { useTheme } from "@/providers/ThemeProvider";
 import { AppShell } from "@/components/layout/AppShell";
-import { Providers } from "@/providers";
 import { Avatar } from "@/components/ui/Avatar";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -107,10 +106,8 @@ function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Providers>
-      <AuthGuard>
-        <ProfileContent />
-      </AuthGuard>
-    </Providers>
+    <AuthGuard>
+      <ProfileContent />
+    </AuthGuard>
   );
 }

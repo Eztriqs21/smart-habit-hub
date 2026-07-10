@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
+import { BASE_PATH } from "@/lib/supabase/client";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -14,7 +15,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push("/auth/signin");
+      router.push(`${BASE_PATH}/auth/signin`);
     }
   }, [user, isLoading, router]);
 

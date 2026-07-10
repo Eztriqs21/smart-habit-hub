@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, type Variants } from "framer-motion";
-import { Providers } from "@/providers";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import {
@@ -190,8 +189,8 @@ function LandingContent() {
                 color: "text-lifestyle-color",
                 bg: "bg-lifestyle-light",
               },
-            ].map((f) => (
-              <motion.div key={f.title} variants={fadeUp} custom={0}>
+            ].map((f, i) => (
+              <motion.div key={f.title} variants={fadeUp} custom={i}>
                 <Card hover className="p-7 h-full group">
                   <div
                     className={`w-12 h-12 rounded-[12px] ${f.bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200`}
@@ -233,8 +232,8 @@ function LandingContent() {
               { step: "1", icon: Zap, title: "Choose your habits", desc: "Pick from templates or create your own. Set frequency, time, and difficulty." },
               { step: "2", icon: CheckCircle, title: "Show up daily", desc: "Check off habits each day. Watch your streaks grow and your scores improve." },
               { step: "3", icon: Flame, title: "See your progress", desc: "Analytics and insights show patterns across Body, Mind, and Lifestyle." },
-            ].map((s) => (
-              <motion.div key={s.step} variants={fadeUp} custom={0} className="relative text-center">
+            ].map((s, i) => (
+              <motion.div key={s.step} variants={fadeUp} custom={i} className="relative text-center">
                 <div className="w-14 h-14 rounded-full gradient-primary text-white flex items-center justify-center text-xl font-bold mx-auto mb-5 relative z-10 shadow-[var(--shadow-glow)]">
                   {s.step}
                 </div>
@@ -295,8 +294,8 @@ function LandingContent() {
                 color: "var(--lifestyle-color)",
                 lightColor: "var(--lifestyle-light)",
               },
-            ].map((d) => (
-              <motion.div key={d.dim} variants={fadeUp} custom={0}>
+            ].map((d, i) => (
+              <motion.div key={d.dim} variants={fadeUp} custom={i}>
                 <Card hover className="p-7 group">
                   <div
                     className="w-14 h-14 rounded-[14px] flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform duration-200"
@@ -390,9 +389,5 @@ function LandingContent() {
 }
 
 export default function HomePage() {
-  return (
-    <Providers>
-      <LandingContent />
-    </Providers>
-  );
+  return <LandingContent />;
 }

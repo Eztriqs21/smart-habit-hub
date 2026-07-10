@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
-import { Providers } from "@/providers";
+import { createClient, BASE_PATH } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/providers/ToastProvider";
@@ -22,7 +21,7 @@ function ForgotPasswordContent() {
     setIsLoading(true);
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/signin`,
+      redirectTo: `${window.location.origin}${BASE_PATH}/auth/signin`,
     });
 
     if (error) {
@@ -67,7 +66,7 @@ function ForgotPasswordContent() {
             <p className="text-sm text-text-secondary mb-6">
               Check <span className="font-medium text-foreground">{email}</span> for the reset link.
             </p>
-            <Link href="/auth/signin">
+            <Link href={`${BASE_PATH}/auth/signin`}>
               <Button variant="secondary" className="w-full">
                 Back to Sign In
               </Button>
@@ -90,7 +89,7 @@ function ForgotPasswordContent() {
         )}
 
         <div className="mt-6 text-center">
-          <Link href="/auth/signin" className="text-sm text-text-secondary hover:text-primary transition-colors">
+          <Link href={`${BASE_PATH}/auth/signin`} className="text-sm text-text-secondary hover:text-primary transition-colors">
             Back to Sign In
           </Link>
         </div>
@@ -100,9 +99,5 @@ function ForgotPasswordContent() {
 }
 
 export default function ForgotPasswordPage() {
-  return (
-    <Providers>
-      <ForgotPasswordContent />
-    </Providers>
-  );
+  return <ForgotPasswordContent />;
 }
