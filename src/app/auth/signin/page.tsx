@@ -144,12 +144,12 @@ function SignInContent() {
           </Button>
 
           <div className="mt-6 text-center space-y-2">
-            <Link href={`${BASE_PATH}/auth/forgot`} className="text-[13px] text-text-secondary hover:text-primary transition-colors">
+            <Link href="/auth/forgot" className="text-[13px] text-text-secondary hover:text-primary transition-colors">
               Forgot password?
             </Link>
             <p className="text-sm text-text-secondary">
               Don&apos;t have an account?{" "}
-              <Link href={`${BASE_PATH}/auth/signup`} className="text-primary font-medium hover:underline">
+              <Link href="/auth/signup" className="text-primary font-medium hover:underline">
                 Sign up
               </Link>
             </p>

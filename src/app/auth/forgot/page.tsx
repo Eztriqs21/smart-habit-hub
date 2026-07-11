@@ -66,7 +66,7 @@ function ForgotPasswordContent() {
             <p className="text-sm text-text-secondary mb-6">
               Check <span className="font-medium text-foreground">{email}</span> for the reset link.
             </p>
-            <Link href={`${BASE_PATH}/auth/signin`}>
+            <Link href="/auth/signin">
               <Button variant="secondary" className="w-full">
                 Back to Sign In
               </Button>
@@ -89,7 +89,7 @@ function ForgotPasswordContent() {
         )}
 
         <div className="mt-6 text-center">
-          <Link href={`${BASE_PATH}/auth/signin`} className="text-sm text-text-secondary hover:text-primary transition-colors">
+          <Link href="/auth/signin" className="text-sm text-text-secondary hover:text-primary transition-colors">
             Back to Sign In
           </Link>
         </div>

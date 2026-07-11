@@ -111,7 +111,7 @@ function SignUpContent() {
               Click the link in the email to confirm your account and start your wellness journey.
             </p>
             <Link
-              href={`${BASE_PATH}/auth/signin`}
+              href="/auth/signin"
               className="inline-flex items-center justify-center h-10 px-4 bg-primary text-white rounded-[10px] text-sm font-medium hover:bg-primary-hover transition-colors"
             >
               Back to Sign In
@@ -223,7 +223,7 @@ function SignUpContent() {
           <div className="mt-6 text-center">
             <p className="text-sm text-text-secondary">
               Already have an account?{" "}
-              <Link href={`${BASE_PATH}/auth/signin`} className="text-primary font-medium hover:underline">
+              <Link href="/auth/signin" className="text-primary font-medium hover:underline">
                 Sign in
               </Link>
             </p>
