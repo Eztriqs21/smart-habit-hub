@@ -1,8 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, BASE_PATH } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { Button } from "@/components/ui/Button";
@@ -17,7 +16,6 @@ const STEPS = ["Welcome", "Focus Areas", "Time Preference", "Template"];
 
 function OnboardingContent() {
   const { user } = useAuth();
-  const router = useRouter();
   const supabase = createClient();
   const {
     currentStep,
@@ -90,7 +88,7 @@ function OnboardingContent() {
     },
     onSuccess: () => {
       complete();
-      router.push("/today");
+      window.location.href = `${BASE_PATH}/today`;
     },
   });
 

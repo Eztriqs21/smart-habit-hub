@@ -42,7 +42,7 @@ function SignInContent() {
     }
 
     showToast("Welcome back!", "success");
-    router.push(`${BASE_PATH}/today`);
+    window.location.href = `${BASE_PATH}/today`;
   };
 
   const handleGoogleSignIn = async () => {

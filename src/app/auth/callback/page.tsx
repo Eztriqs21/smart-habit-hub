@@ -25,18 +25,18 @@ function CallbackHandler() {
           setError("Failed to complete sign-in. Please try again.");
           return;
         }
-        router.push(`${BASE_PATH}${next}`);
+        window.location.href = `${BASE_PATH}${next}`;
         return;
       }
 
       if (accessToken) {
-        router.push(`${BASE_PATH}${next}`);
+        window.location.href = `${BASE_PATH}${next}`;
         return;
       }
 
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        router.push(`${BASE_PATH}${next}`);
+        window.location.href = `${BASE_PATH}${next}`;
       } else {
         setError("No authentication data found. Please try signing in again.");
       }

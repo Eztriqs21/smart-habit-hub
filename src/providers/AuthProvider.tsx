@@ -98,6 +98,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               created_at: data.created_at,
               updated_at: data.updated_at,
             });
+          } else {
+            setUser({
+              id: newSession.user.id,
+              email: newSession.user.email || "",
+              display_name: null,
+              avatar_url: null,
+              onboarding_completed: false,
+              preferences: { theme: "system", focus_areas: [], time_preference: "morning" },
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            });
           }
         } else {
           setUser(null);
